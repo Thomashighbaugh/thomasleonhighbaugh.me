@@ -77,3 +77,40 @@ Execute a multi-phase improvement plan encompassing 6 workstreams:
 - `.webp` files are generated artifacts — consider adding `*.webp` to `.gitignore` if they should not be committed
 - Social links page at `links.thomasleonhighbaugh.me` becomes the single source of truth for social presence
 - Future image additions should run `npm run build` (prebuild script handles optimization automatically)
+
+## ADR-004: Test Foundation
+
+**Context:**
+The project had zero test infrastructure. There was no test framework, no test files, and no way to verify correctness during refactors or upgrades. The pure utility functions in `src/lib/utils.ts` and SolidJS components were the highest-value targets for initial test coverage.
+
+**Decision:**
+Add a Vitest-based test foundation:
+
+- **Framework**: Vitest 3.x with jsdom environment for unit/component tests
+- **SolidJS support**: `vite-plugin-solid` for JSX transform, `@solidjs/testing-library` for component rendering
+- **Config**: `vitest.config.ts` at project root with `@/*` path alias resolution matching the Astro tsconfig
+- **Setup**: `src/test/setup.ts` importing `@testing-library/jest-dom` matchers
+- **Fixtures**: `src/test/fixtures/content.ts` with reusable mock `CollectionEntry` factories for blog and project entries
+- **Test exclusion**: Added `src/**/*.test.*`, `src/**/*.spec.*`, `e2e` to `tsconfig.json` `exclude` to prevent `astro check` from scanning test files
+- **Package scripts**: `test` (vitest run), `test:watch` (vitest), `test:coverage` (vitest run --coverage)
+
+**Test files created (31 tests, 3 files):**
+
+| Test file | Tests | What it covers |
+|-----------|-------|----------------|
+| `src/lib/__tests__/utils.test.ts` | 19 | `cn()`, `formatDate()`, `readingTime()`, `truncateText()` — all edge cases including falsy filtering, invalid dates, empty strings, boundary lengths, documented negative-cutoff behavior |
+| `src/components/__tests__/ArrowCard.test.tsx` | 9 | Rendering title, date, summary, tags, pill badges (blog/project), hide pill when not set, correct href with collection+slug, project vs blog routing |
+| `src/components/__tests__/Counter.test.tsx` | 3 | Initial state, singular/plural text, multi-click increment |
+
+**Rationale:**
+- Pure functions are the safest starting point (zero dependencies, zero mocking needed)
+- SolidJS component tests validate the `@solidjs/testing-library` + Vitest pipeline works
+- Fixture factories enable easy expansion to Search/SearchCollection/other component tests
+- Excluding test files from `tsconfig.json` prevents `astro check` from failing on test-only imports
+
+**Consequences:**
+- All 31 tests pass, build still passes clean (0 errors, 39 pages, 2.4s)
+- Adding new tests: create `__tests__/*.test.ts(x)` next to the source file, add to fixtures if needed
+- `npm run test` runs before any code change — recommended as a pre-commit hook
+- No coverage threshold enforced yet — available via `npm run test:coverage`
+- E2E tests deferred — Playwright setup not included in this ADR
