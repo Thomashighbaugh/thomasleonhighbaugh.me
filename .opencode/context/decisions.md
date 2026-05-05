@@ -46,3 +46,34 @@ Remove all unreferenced/stale assets:
 - 5 stale/unused files removed
 - Dynamic robots.txt route handles URL correctly at build time
 - public/AGENTS.md updated to reflect the cleaned file listing
+
+## ADR-003: Astro 5 Migration, Codebase Improvements, and Cleanup
+
+**Context:**
+The project was on Astro 4.16 and had several quality gaps: no testing, stale template fork artifacts (Mark Horn references), unoptimized images (7.3MB raw PNGs), no error handling, no structured SEO data, and `client:load` eager-loading on all SolidJS islands.
+
+**Decision:**
+Execute a multi-phase improvement plan encompassing 6 workstreams:
+
+1. **Astro 5 Migration** — Upgrade from 4.16 to 5.18 with legacy collections flag. Package bumps: `@astrojs/mdx` 2→4, `@astrojs/solid-js` 4→5, `@astrojs/check` 0.5→0.9.
+2. **Error Landscaping** — Create `404.astro` page, fix ArrowCard type error (`as string[]` cast).
+3. **Template Fork Cleanup** — Replace `SITE.AUTHOR: "Mark Horn"` with `"Thomas Leon Highbaugh"`, replace stale hardcoded `SOCIALS` array (markhorn-dev emails, repos, socials) with a single reference to `links.thomasleonhighbaugh.me`, remove unused `Socials` type and orphaned imports.
+4. **Image Pipeline** — Create `scripts/optimize-images.mjs` prebuild script using `sharp` (already a dependency) to convert all content images to WebP with 1200px max-width. 93.7% savings (7.33MB → 0.46MB). Runs automatically before every build.
+5. **Structured Data (JSON-LD)** — Create reusable `JsonLd.astro` component. Add `WebSite` + `Person` schema on homepage, `BlogPosting` on blog posts, `CreativeWork` on projects, `BreadcrumbList` on about page.
+6. **Client Island Strategy** — Change `client:load` to `client:idle` on blog and project listing SearchCollection components (search page stays as `client:load`).
+
+**Rationale:**
+- Astro 5 unlocks content layer, better image optimization, server islands, and Vite 6 — future-proofing
+- 404 page provides branded error experience instead of Vercel default
+- Template fork artifacts (Mark Horn) would confuse visitors and harm SEO authorship signals
+- Hardcoded stale social links are a maintenance burden — single links page is simpler
+- Image pipeline saves 7MB+ per build and improves page load times
+- JSON-LD structured data enables rich search result snippets
+- `client:idle` defers JS loading to first idle moment, improving initial page load without UX impact
+
+**Consequences:**
+- Build passes clean: 0 errors, 0 warnings, 39 pages, 2.4s build time
+- AGENTS.md files in `src/pages/` and `src/content/` subdirectories were moved to `.opencode/context/frameworks/` because Astro treats `.md` files in `src/pages/` as routes
+- `.webp` files are generated artifacts — consider adding `*.webp` to `.gitignore` if they should not be committed
+- Social links page at `links.thomasleonhighbaugh.me` becomes the single source of truth for social presence
+- Future image additions should run `npm run build` (prebuild script handles optimization automatically)

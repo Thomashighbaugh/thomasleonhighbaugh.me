@@ -5,6 +5,7 @@ import TopLayout from "@layouts/TopLayout.astro"
 import BottomLayout from "@layouts/BottomLayout.astro"
 import ArticleTopLayout from "@layouts/ArticleTopLayout.astro"
 import ArticleBottomLayout from "@layouts/ArticleBottomLayout.astro"
+import JsonLd from "@components/JsonLd.astro"
 
 // Create the static projects pages
 export async function getStaticPaths() {
@@ -18,7 +19,7 @@ export async function getStaticPaths() {
 // Get the requested project
 type Props = CollectionEntry<"projects">
 const project = Astro.props
-const { title, summary } = project.data
+const { title, summary, date } = project.data
 ---
 
 <PageLayout title={title} description={summary}>
@@ -32,4 +33,16 @@ const { title, summary } = project.data
       <ArticleBottomLayout entry={project} />
     </div>
   </BottomLayout>
+  <JsonLd
+    schema={{
+      "@type": "CreativeWork",
+      name: title,
+      description: summary,
+      datePublished: date.toISOString(),
+      author: {
+        "@type": "Person",
+        name: "Thomas Leon Highbaugh",
+      },
+    }}
+  />
 </PageLayout>

@@ -1,10 +1,10 @@
-import type { Site, Page, Links, Socials } from "@types"
+import type { Site, Page, Links } from "@types"
 
 // Global
 export const SITE: Site = {
   TITLE: "Thomas Leon Highbaugh",
   DESCRIPTION: "Welcome to Thomas Leon Highbaugh, a portfolio and blog for designers and developers.",
-  AUTHOR: "Mark Horn",
+  AUTHOR: "Thomas Leon Highbaugh",
 }
 
 
@@ -55,31 +55,6 @@ export const LINKS: Links = [
   },
 ]
 
-// Socials
-export const SOCIALS: Socials = [
-  { 
-    NAME: "Email",
-    ICON: "email", 
-    TEXT: "markhorn.dev@gmail.com",
-    HREF: "mailto:markhorn.dev@gmail.com",
-  },
-  { 
-    NAME: "Github",
-    ICON: "github",
-    TEXT: "markhorn-dev",
-    HREF: "https://github.com/markhorn-dev/astro-sphere"
-  },
-  { 
-    NAME: "LinkedIn",
-    ICON: "linkedin",
-    TEXT: "markhorn-dev",
-    HREF: "https://www.linkedin.com/in/markhorn-dev/",
-  },
-  { 
-    NAME: "Twitter",
-    ICON: "twitter-x",
-    TEXT: "markhorn_dev",
-    HREF: "https://twitter.com/markhorn_dev",
-  },
-]
+// Socials — all links are at the central links page
+export const SOCIALS_LINKS_HREF = "https://links.thomasleonhighbaugh.me"
 

@@ -3,6 +3,8 @@ import PageLayout from "@layouts/PageLayout.astro"
 import TwinklingStars from "@components/TwinklingStars.astro"
 import MeteorShower from "@components/MeteorShower.astro"
 import SVGHero from "@components/SVGHero.astro"
+import JsonLd from "@components/JsonLd.astro"
+import { SITE } from "@consts"
 
 ---
 
@@ -43,7 +45,22 @@ import SVGHero from "@components/SVGHero.astro"
     </div>
   </section>
 
-  
+  <JsonLd
+    schema={{
+      "@type": "WebSite",
+      name: "Thomas Leon Highbaugh",
+      url: "https://thomasleonhighbaugh.me",
+      description: SITE.DESCRIPTION,
+    }}
+  />
+  <JsonLd
+    schema={{
+      "@type": "Person",
+      name: "Thomas Leon Highbaugh",
+      url: "https://thomasleonhighbaugh.me",
+      sameAs: "https://links.thomasleonhighbaugh.me",
+    }}
+  />
 </PageLayout>
 
 <style>

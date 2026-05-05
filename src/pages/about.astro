@@ -3,7 +3,8 @@ import { getCollection } from "astro:content"
 import PageLayout from "@layouts/PageLayout.astro"
 import ArrowCard from "@components/ArrowCard"
 import StackCard from "@components/StackCard.astro"
-import { SITE, SOCIALS } from "@consts"
+import JsonLd from "@components/JsonLd.astro"
+import { SITE, SOCIALS_LINKS_HREF } from "@consts"
 
 const posts = (await getCollection("blog"))
   .filter(post => !post.data.draft)
@@ -105,6 +106,20 @@ const stack = [
         </section>
       </div>
 
+      <!-- Links Section -->
+      <section class="animate">
+        <div class="space-y-4">
+          <p class="font-semibold text-black dark:text-white">
+            Find me elsewhere
+          </p>
+          <a href={SOCIALS_LINKS_HREF} target="_blank" class="group underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
+            <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
+              links.thomasleonhighbaugh.me
+            </span>
+          </a>
+        </div>
+      </section>
+
       <!-- Tech Stack Section -->
       <section class="animate">
         <div class="space-y-4">
@@ -132,4 +147,23 @@ const stack = [
       </section>
     </div>
   </div>
+  <JsonLd
+    schema={{
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://thomasleonhighbaugh.me",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "About",
+          item: "https://thomasleonhighbaugh.me/about",
+        },
+      ],
+    }}
+  />
 </PageLayout>
