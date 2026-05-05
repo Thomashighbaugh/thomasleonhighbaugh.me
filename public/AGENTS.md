@@ -10,15 +10,11 @@ Static assets served at the root URL path. Contains fonts, client-side JavaScrip
 
 | File | Description |
 |------|-------------|
-| `favicon.svg` | Browser tab icon |
-| `robots.txt` | Search engine crawling rules |
-| `brand.svg` | Brand logo SVG |
-| `social.svg` | Social sharing image graphic |
-| `stack.svg` | Technology stack illustration |
-| `ui.svg` | UI illustration |
-| `planet.png` | Decorative planet image |
+| `favicon.svg` | Browser tab icon and site logo |
+| `stack.svg` | Technology stack icon sprites |
+| `ui.svg` | UI icon sprites (search, nav, social, theme) |
 | `open-graph.jpg` | Open Graph social preview image |
-| `copy.svg` | Copy icon SVG |
+| `copy.svg` | Copy icon SVG (for code block copy buttons) |
 
 ## Subdirectories
 
