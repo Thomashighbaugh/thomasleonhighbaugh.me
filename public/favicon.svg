@@ -8,11 +8,15 @@
         font-weight: normal;
         font-style: normal;
       }
+      text{
+         font-family: 'Dimitri';
+      }
+      
     </style>
 
     <linearGradient id="Gradient3" x1="0" x2="0" y1="0" y2="1">
       <stop offset="0%" stop-color="#94e4ff" stop-opacity="10"></stop>
-      <stop offset="60%" stop-color="#0badff" stop-opacity="10"></stop>
+      <stop offset="40%" stop-color="#0badff" stop-opacity="10"></stop>
       <stop offset="100%" stop-color="#0872A8" stop-opacity="10"></stop>
     </linearGradient>
     <linearGradient id="Gradient2" x1="0" x2="0" y1="1" y2="1">
@@ -32,7 +36,7 @@
   <g transform=" matrix(0.866, -0.5, -0.25, -0.443, 80, 80)">
     <path d="M 0,70 A 65,70 0 0,0 65,0 5,5 0 0,1 75,0 75,70 0 0,1 0,70Z" fill="url(#Gradient1)" stroke="#222222aa"
       stroke-width="1">
-      <animateTransform attributeName="transform" type="rotate" from="345 -10 10" to="0 0 0" dur="5s"
+      <animateTransform attributeName="transform" type="rotate" from="345 -10 10" to="0 0 0" dur="8s"
         repeatCount="indefinite"></animateTransform>
     </path>
   </g>
@@ -45,13 +49,11 @@
     <!-- Part 1: Stacked text to create the solid "3D" extrusion effect -->
     <!-- These are ordered from back to front -->
 
-    <text x="76" y="86" stroke="#2d2d2d" fill="#2d2d2d">TLH</text>
+    <text x="76" y="86" stroke="#2d2d2d" fill="#2d2d2d"  stroke-opacity="1" stroke-width="2.5" stroke-linejoin="round">TLH</text>
 
 
     <text x="76" y="80" fill="#ffffff" stroke="#3c3c3c" stroke-opacity="1" stroke-width="2.5" stroke-linejoin="round"
-      paint-order="stroke" filter="url(#blurry-shadows)">
-      TLH
-    </text>
+      paint-order="stroke" filter="url(#blurry-shadows)">TLH</text>
   </g>
   <!-- END: Text rendering updated -->
 </svg>
