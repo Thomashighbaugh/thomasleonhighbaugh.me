@@ -1,4 +1,4 @@
-<!-- Generated: 2026-05-04 | Updated: 2026-05-04 -->
+<!-- Generated: 2026-06-16 | Updated: 2026-06-16 -->
 
 # thomasleonhighbaugh.me
 
@@ -15,6 +15,7 @@ Personal portfolio and blog site built with Astro, featuring blog posts on Linux
 | `package.json` | Project dependencies and scripts (v6.2.1) |
 | `vercel.json` | Vercel deployment configuration |
 | `.nvmrc` | Node version management |
+| `vitest.config.ts` | Vitest test configuration with jsdom + SolidJS plugin |
 | `AGENTS.md` | AI-readable documentation (this file) |
 
 ## Subdirectories
@@ -55,7 +56,10 @@ Personal portfolio and blog site built with Astro, featuring blog posts on Linux
 - SolidJS interactive components live in `src/components/` as `.tsx` files
 
 ### Testing Requirements
-- No formal test suite yet; manual verification via `npm run dev` and `npm run build`
+- Run `npm run test` before committing to verify tests pass (31 tests across 3 files)
+- Run `npm run build` before committing to verify no type/build errors
+- Tests live in `__tests__/` directories next to source files
+- Vitest 3.x with jsdom environment and @solidjs/testing-library
 
 ### Common Patterns
 - `@/` path alias maps to `src/` directory
@@ -70,7 +74,7 @@ Personal portfolio and blog site built with Astro, featuring blog posts on Linux
 - `public/` - Static assets served at root path
 
 ### External
-- Astro 4.16 - Web framework
+- Astro 5.18 - Web framework
 - SolidJS 1.9 - Interactive UI components
 - Tailwind CSS 3.4 - Utility-first CSS
 - TypeScript 5.9 - Type safety

@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-05-04 | Updated: 2026-05-04 -->
+<!-- Generated: 2026-06-16 | Updated: 2026-06-16 -->
 
 # src
 
@@ -24,6 +24,7 @@ Application source code for the Astro portfolio and blog site. Contains componen
 | `content/` | Astro content collections: blog, projects, legal (see `content/AGENTS.md`) |
 | `lib/` | Utility functions (see `lib/AGENTS.md`) |
 | `styles/` | Global CSS with Tailwind directives (see `styles/AGENTS.md`) |
+| `test/` | Test setup, fixtures, and configuration (see `test/AGENTS.md`) |
 
 ## For AI Agents
 
