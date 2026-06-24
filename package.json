@@ -9,7 +9,6 @@
     "dev": "astro dev",
     "dev:network": "astro dev --host",
     "start": "astro dev",
-    "prebuild": "node scripts/optimize-images.mjs",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "preview:network": "astro dev --host",
