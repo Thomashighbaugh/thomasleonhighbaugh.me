@@ -1,0 +1,131 @@
+name: Crosspost (manual)
+
+# Manual trigger for crossposting one or more blog posts to all configured
+# platforms. Use this to (re-)publish the last N posts, or a specific post
+# by slug, on demand.
+#
+# After the first run, success on a platform is recorded in
+# `.crosspost-state.json` at the repo root. The workflow commits that
+# file back, so subsequent runs skip already-posted content unless
+# `--force` is set.
+
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'Number of recent posts to publish (when slug is empty)'
+        required: false
+        default: '5'
+        type: string
+      slug:
+        description: 'Specific post slug to publish (overrides count)'
+        required: false
+        type: string
+      platforms:
+        description: 'Comma-separated platforms to publish to (empty = all configured)'
+        required: false
+        type: string
+      force:
+        description: 'Re-publish to platforms that already posted this slug'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      include_drafts:
+        description: 'Include draft posts in the candidate list'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      dry_run:
+        description: 'Log API calls without actually posting'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+permissions:
+  contents: write  # to commit state back
+
+jobs:
+  crosspost:
+    name: Crosspost
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+
+      - name: Install dependencies
+        working-directory: scripts/crosspost
+        run: npm ci
+
+      - name: Run crosspost
+        working-directory: scripts/crosspost
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
+          HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          MASTODON_TOKEN: ${{ secrets.MASTODON_TOKEN }}
+          BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR_URN: ${{ secrets.LINKEDIN_AUTHOR_URN }}
+          TWITTER_CLIENT_ID: ${{ secrets.TWITTER_CLIENT_ID }}
+          TWITTER_CLIENT_SECRET: ${{ secrets.TWITTER_CLIENT_SECRET }}
+          TWITTER_REFRESH_TOKEN: ${{ secrets.TWITTER_REFRESH_TOKEN }}
+        run: |
+          set -e
+          ARGS="post"
+          if [ -n "${{ inputs.slug }}" ]; then
+            ARGS="$ARGS --slug ${{ inputs.slug }}"
+          else
+            ARGS="$ARGS --count ${{ inputs.count }}"
+          fi
+          if [ -n "${{ inputs.platforms }}" ]; then
+            ARGS="$ARGS --platforms '${{ inputs.platforms }}'"
+          fi
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          if [ "${{ inputs.include_drafts }}" = "true" ]; then
+            ARGS="$ARGS --drafts"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          echo "Running: npm run crosspost -- $ARGS"
+          npm run crosspost -- $ARGS
+
+      - name: Commit state file
+        if: inputs.dry_run != 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          if [ -f .crosspost-state.json ]; then
+            git add .crosspost-state.json
+            if git diff --cached --quiet; then
+              echo "State file unchanged."
+            else
+              git commit -m "chore(crosspost): update state file"
+              git push
+            fi
+          fi

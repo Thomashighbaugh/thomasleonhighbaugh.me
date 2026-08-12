@@ -1,0 +1,41 @@
+{
+  "name": "@thomasleonhighbaugh/crosspost",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Crosspost Astro blog posts to dev.to, Hashnode, Mastodon, Bluesky, Telegram, LinkedIn, and X (Twitter) via GitHub Actions.",
+  "main": "bin/crosspost.ts",
+  "bin": {
+    "crosspost": "bin/crosspost.ts"
+  },
+  "scripts": {
+    "crosspost": "tsx bin/crosspost.ts",
+    "crosspost:list": "tsx bin/crosspost.ts list",
+    "crosspost:dry-run": "DRY_RUN=true tsx bin/crosspost.ts",
+    "build": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@mastodon/api": "^1.4.0",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.1.0",
+    "pino": "^9.5.0",
+    "undici": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^24.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=24.x"
+  }
+}

@@ -1,0 +1,124 @@
+name: Crosspost (auto)
+
+# Automatically crosspost a new blog post to all configured platforms
+# when a file is added or changed under `src/content/blog/**/index.md`
+# on the main branch.
+#
+# The dedup state file `.crosspost-state.json` prevents the same post
+# from being sent to the same platform twice. Imported posts on the
+# initial backfill should use the manual workflow (`crosspost-manual.yml`)
+# with `--count N`.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/blog/**/index.md'
+      - '.crosspost-state.json'
+  workflow_dispatch:  # also allow manual run for backfills
+
+permissions:
+  contents: write  # to commit state back
+
+jobs:
+  crosspost:
+    if: github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[skip crosspost]')
+    name: Crosspost
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+
+      - name: Install dependencies
+        working-directory: scripts/crosspost
+        run: npm ci
+
+      - name: Detect changed posts
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            # Posts added or modified in this push
+            CHANGED=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD \
+              -- 'src/content/blog/*/index.md' 2>/dev/null | \
+              xargs -I{} dirname {} | xargs -I{} basename {} | sort -u)
+            if [ -z "$CHANGED" ]; then
+              echo "No post changes detected."
+              echo "slugs=" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "Changed posts: $CHANGED"
+            echo "slugs=$CHANGED" >> "$GITHUB_OUTPUT"
+          else
+            # workflow_dispatch — empty, the dispatcher will use --count
+            echo "slugs=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Crosspost each changed post
+        if: steps.changed.outputs.slugs != ''
+        working-directory: scripts/crosspost
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
+          HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          MASTODON_TOKEN: ${{ secrets.MASTODON_TOKEN }}
+          BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR_URN: ${{ secrets.LINKEDIN_AUTHOR_URN }}
+          TWITTER_CLIENT_ID: ${{ secrets.TWITTER_CLIENT_ID }}
+          TWITTER_CLIENT_SECRET: ${{ secrets.TWITTER_CLIENT_SECRET }}
+          TWITTER_REFRESH_TOKEN: ${{ secrets.TWITTER_REFRESH_TOKEN }}
+        run: |
+          set -e
+          for slug in ${{ steps.changed.outputs.slugs }}; do
+            echo "=== Crossposting $slug ==="
+            npm run crosspost -- post --slug "$slug" || echo "Post failed: $slug"
+          done
+
+      - name: Run with --count when manually dispatched
+        if: github.event_name == 'workflow_dispatch' && steps.changed.outputs.slugs == ''
+        working-directory: scripts/crosspost
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          HASHNODE_TOKEN: ${{ secrets.HASHNODE_TOKEN }}
+          HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+          MASTODON_INSTANCE: ${{ secrets.MASTODON_INSTANCE }}
+          MASTODON_TOKEN: ${{ secrets.MASTODON_TOKEN }}
+          BLUESKY_IDENTIFIER: ${{ secrets.BLUESKY_IDENTIFIER }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_AUTHOR_URN: ${{ secrets.LINKEDIN_AUTHOR_URN }}
+          TWITTER_CLIENT_ID: ${{ secrets.TWITTER_CLIENT_ID }}
+          TWITTER_CLIENT_SECRET: ${{ secrets.TWITTER_CLIENT_SECRET }}
+          TWITTER_REFRESH_TOKEN: ${{ secrets.TWITTER_REFRESH_TOKEN }}
+        run: npm run crosspost -- post --count 1
+
+      - name: Commit state file
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          if [ -f .crosspost-state.json ]; then
+            git add .crosspost-state.json
+            if git diff --cached --quiet; then
+              echo "State file unchanged."
+            else
+              git commit -m "chore(crosspost): update state file"
+              git push
+            fi
+          fi
