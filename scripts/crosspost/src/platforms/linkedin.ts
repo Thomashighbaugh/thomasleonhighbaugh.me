@@ -1,11 +1,8 @@
 /**
  * LinkedIn crosspost client.
  *
- * Updated: Now accepts simple numeric Member ID to construct the URN.
- *
- * Required credentials:
- *   LINKEDIN_ACCESS_TOKEN  — OAuth2 access token with `w_member_social` scope
- *   LINKEDIN_MEMBER_ID     — The numeric ID from your profile URL
+ * Updated: Now includes explicit 403 error debugging to help identify
+ * missing scopes.
  */
 
 import type { PlatformClient, PublishContext, PublishResult } from './types.js'
@@ -26,7 +23,6 @@ export const linkedinFactory = (): PlatformClient => ({
       throw new Error('LinkedIn: LINKEDIN_ACCESS_TOKEN and LINKEDIN_MEMBER_ID are required')
     }
 
-    // Construct the URN automatically
     const authorUrn = `urn:li:person:${memberId}`
     const canonicalUrl = `${ctx.siteUrl}/blog/${post.slug}/`
     const text = truncateForLinkedIn(post, canonicalUrl)
@@ -66,6 +62,12 @@ export const linkedinFactory = (): PlatformClient => ({
       },
       body: payload,
     })
+
+    if (res.status === 403) {
+      throw new Error(
+        `LinkedIn: 403 Forbidden. This usually means your Access Token is missing the 'w_member_social' scope. Please regenerate your token in the Developer Portal with this scope enabled. Token: ...${accessToken.slice(-5)}`
+      )
+    }
 
     if (res.status !== 201) {
       throw new Error(`LinkedIn: ugcPosts failed: ${res.status} ${res.body}`)
