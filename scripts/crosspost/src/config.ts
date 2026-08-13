@@ -105,12 +105,12 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): CrosspostConfi
     }
   }
 
-  // LinkedIn — OAuth2 access token + author URN
-  if (env.LINKEDIN_ACCESS_TOKEN && env.LINKEDIN_AUTHOR_URN) {
+  // LinkedIn — OAuth2 access token + member ID
+  if (env.LINKEDIN_ACCESS_TOKEN && env.LINKEDIN_MEMBER_ID) {
     platforms.linkedin = {
       credentials: {
         accessToken: env.LINKEDIN_ACCESS_TOKEN,
-        authorUrn: env.LINKEDIN_AUTHOR_URN,
+        memberId: env.LINKEDIN_MEMBER_ID,
       },
     }
   }
