@@ -1,20 +1,11 @@
 /**
  * LinkedIn crosspost client.
  *
- * Posts an article via the LinkedIn API:
- *   POST https://api.linkedin.com/v2/ugcPosts
+ * Updated: Now accepts simple numeric Member ID to construct the URN.
  *
  * Required credentials:
  *   LINKEDIN_ACCESS_TOKEN  — OAuth2 access token with `w_member_social` scope
- *   LINKEDIN_AUTHOR_URN    — urn:li:person:<id> or urn:li:organization:<id>
- *
- * Note: LinkedIn's API requires a registered app and the user to complete
- * the OAuth → Marketing Developer Platform (MDP) approval flow. The
- * access token has a 60-day lifetime; refresh via the OAuth flow.
- *
- * For image attachments, we'd need to first upload the image via the
- * `assets` endpoint and reference its URN. We skip that here to keep the
- * v1 build light — the post will still publish, just without a thumbnail.
+ *   LINKEDIN_MEMBER_ID     — The numeric ID from your profile URL
  */
 
 import type { PlatformClient, PublishContext, PublishResult } from './types.js'
@@ -30,11 +21,13 @@ export const linkedinFactory = (): PlatformClient => ({
 
   async publish(post: BlogPost, rendered: RenderResult, ctx: PublishContext): Promise<PublishResult> {
     const accessToken = ctx.config.credentials.accessToken
-    const authorUrn = ctx.config.credentials.authorUrn
-    if (!accessToken || !authorUrn) {
-      throw new Error('LinkedIn: LINKEDIN_ACCESS_TOKEN and LINKEDIN_AUTHOR_URN are required')
+    const memberId = ctx.config.credentials.memberId
+    if (!accessToken || !memberId) {
+      throw new Error('LinkedIn: LINKEDIN_ACCESS_TOKEN and LINKEDIN_MEMBER_ID are required')
     }
 
+    // Construct the URN automatically
+    const authorUrn = `urn:li:person:${memberId}`
     const canonicalUrl = `${ctx.siteUrl}/blog/${post.slug}/`
     const text = truncateForLinkedIn(post, canonicalUrl)
 
@@ -77,7 +70,6 @@ export const linkedinFactory = (): PlatformClient => ({
     if (res.status !== 201) {
       throw new Error(`LinkedIn: ugcPosts failed: ${res.status} ${res.body}`)
     }
-    // LinkedIn returns the post id in the `x-restli-id` header.
     const id = (res.headers['x-restli-id'] as string | undefined) ?? res.body
     const remoteUrl = `https://www.linkedin.com/feed/update/${encodeURIComponent(id)}`
 
@@ -86,8 +78,6 @@ export const linkedinFactory = (): PlatformClient => ({
 })
 
 function truncateForLinkedIn(post: BlogPost, canonicalUrl: string): string {
-  // LinkedIn articles allow up to ~3000 chars for the share comment; we
-  // cap at 1300 to keep it scannable in the feed.
   const header = `${post.frontmatter.title}\n\n`
   const summary = post.frontmatter.summary
   const footer = `\n\nRead more: ${canonicalUrl}`
