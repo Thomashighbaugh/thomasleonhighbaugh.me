@@ -1,8 +1,8 @@
 /**
  * LinkedIn crosspost client.
  *
- * Updated: Now includes explicit 403 error debugging to help identify
- * missing scopes.
+ * Updated: Automatically fetches the Member ID if not provided,
+ * eliminating the need for manual discovery.
  */
 
 import type { PlatformClient, PublishContext, PublishResult } from './types.js'
@@ -18,10 +18,13 @@ export const linkedinFactory = (): PlatformClient => ({
 
   async publish(post: BlogPost, rendered: RenderResult, ctx: PublishContext): Promise<PublishResult> {
     const accessToken = ctx.config.credentials.accessToken
-    const memberId = ctx.config.credentials.memberId
-    if (!accessToken || !memberId) {
-      throw new Error('LinkedIn: LINKEDIN_ACCESS_TOKEN and LINKEDIN_MEMBER_ID are required')
+    if (!accessToken) {
+      throw new Error('LinkedIn: LINKEDIN_ACCESS_TOKEN is required')
     }
+
+    // --- AUTO-DISCOVERY ---
+    // If memberId isn't provided, fetch it using the token.
+    const memberId = ctx.config.credentials.memberId ?? await this.fetchMemberId(accessToken)
 
     const authorUrn = `urn:li:person:${memberId}`
     const canonicalUrl = `${ctx.siteUrl}/blog/${post.slug}/`
@@ -65,7 +68,7 @@ export const linkedinFactory = (): PlatformClient => ({
 
     if (res.status === 403) {
       throw new Error(
-        `LinkedIn: 403 Forbidden. This usually means your Access Token is missing the 'w_member_social' scope. Please regenerate your token in the Developer Portal with this scope enabled. Token: ...${accessToken.slice(-5)}`
+        `LinkedIn: 403 Forbidden. This usually means your Access Token is missing the 'w_member_social' scope OR the 'Share on LinkedIn' product is not added to your App in the Developer Portal. Token: ...${accessToken.slice(-5)}`
       )
     }
 
@@ -77,6 +80,25 @@ export const linkedinFactory = (): PlatformClient => ({
 
     return { remoteId: id, remoteUrl }
   },
+
+  async fetchMemberId(accessToken: string): Promise<string> {
+    const res = await httpRequest(`${LINKEDIN_API}/me`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'X-Restli-Protocol-Version': '2.0.0',
+      },
+    })
+    if (res.status !== 200) {
+      throw new Error(`LinkedIn: Failed to auto-discover Member ID. Check scopes (requires r_liteprofile or r_member_social). Status: ${res.status} ${res.body}`)
+    }
+    const data = res.json() as { id: string } | null
+    if (!data?.id) throw new Error(`LinkedIn: Failed to parse Member ID from response: ${res.body}`)
+    
+    // eslint-disable-next-line no-console
+    console.log(`Auto-discovered LinkedIn Member ID: ${data.id}`)
+    return data.id
+  }
 })
 
 function truncateForLinkedIn(post: BlogPost, canonicalUrl: string): string {
