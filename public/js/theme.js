@@ -1,6 +1,10 @@
 function changeTheme() {
   const element = document.documentElement
-  const theme = element.classList.contains("dark") ? "light" : "dark"
+  const isHome = window.location.pathname === "/"
+  const currentUserTheme = localStorage.theme === "dark" ? "dark" : "light"
+  const newUserTheme = currentUserTheme === "dark" ? "light" : "dark"
+  // The home page hero is always dark; only the stored preference changes there.
+  const theme = isHome ? "dark" : newUserTheme
 
   const css = document.createElement("style")
 
@@ -25,11 +29,14 @@ function changeTheme() {
 
   window.getComputedStyle(css).opacity
   document.head.removeChild(css)
-  localStorage.theme = theme
+  // Persist the user's actual preference, not the home page's forced dark value.
+  localStorage.theme = newUserTheme
 }
 
 function preloadTheme() {
+  const isHome = window.location.pathname === "/"
   const theme = (() => {
+    if (isHome) return "dark"
     const userTheme = localStorage.theme
 
     if (userTheme === "light" || userTheme === "dark") {
@@ -47,7 +54,10 @@ function preloadTheme() {
     element.classList.remove("dark")
   }
 
-  localStorage.theme = theme
+  // Only persist a real user preference; never force "dark" for the home page.
+  if (!isHome) {
+    localStorage.theme = theme
+  }
 }
 
 window.onload = () => {
