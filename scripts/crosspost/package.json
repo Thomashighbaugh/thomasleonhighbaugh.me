@@ -19,7 +19,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@mastodon/api": "^1.4.0",
     "gray-matter": "^4.0.3",
     "markdown-it": "^14.1.0",
     "pino": "^9.5.0",

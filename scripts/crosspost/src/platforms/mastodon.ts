@@ -2,8 +2,8 @@
  * Mastodon crosspost client.
  *
  * Mastodon is a federated network — pick any instance (e.g. mastodon.social,
- * peoplemaking.games, chaos.social). We use the official @mastodon/api
- * client library which speaks the Mastodon REST API directly.
+ * peoplemaking.games, chaos.social). We speak the Mastodon REST API directly
+ * via the shared `httpRequest` helper (no external client library).
  *
  * Post format: short text + canonical URL. Mastodon's character limit is
  * 500 by default but most instances allow more (up to ~10,000). We cap at
@@ -14,8 +14,8 @@
  *   MASTODON_TOKEN     — User access token (Settings → Development → New Token)
  */
 
-import { login, createStatus } from '@mastodon/api'
 import type { PlatformClient, PublishContext, PublishResult } from './types.js'
+import { httpRequest } from './types.js'
 import type { BlogPost } from '../frontmatter.js'
 import type { RenderResult } from '../renderer.js'
 
@@ -41,15 +41,25 @@ export const mastodonFactory = (): PlatformClient => ({
       return { remoteId: 'dry-run', remoteUrl: canonicalUrl }
     }
 
-    const client = login({ url: instance, accessToken: token })
+    const res = await httpRequest(`${instance}/api/v1/statuses`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: {
+        status: text,
+        visibility: 'public',
+      },
+    })
 
-    const status = await createStatus(client, {
-      status: text,
-      visibility: 'public',
-    } as Parameters<typeof createStatus>[1])
+    if (res.status !== 200) {
+      throw new Error(`Mastodon: POST /api/v1/statuses failed: ${res.status} ${res.body}`)
+    }
 
-    const data = status.json as { id: string; url?: string } | undefined
-    if (!data?.id) throw new Error(`Mastodon: response missing id: ${JSON.stringify(status.json)}`)
+    const data = res.json() as { id: string; url?: string } | null
+    if (!data?.id) throw new Error(`Mastodon: response missing id: ${res.body}`)
 
     return {
       remoteId: data.id,
