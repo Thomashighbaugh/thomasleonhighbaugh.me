@@ -35,10 +35,9 @@ export const blueskyFactory = (): PlatformClient => ({
     }
 
     const canonicalUrl = `${ctx.siteUrl}/blog/${post.slug}/`
-    const text = truncateForBluesky(post.frontmatter.summary, canonicalUrl)
+    const text = truncateForBluesky(post.frontmatter.summary)
 
     if (ctx.dryRun) {
-      // eslint-disable-next-line no-console
       console.log('[dry-run] bluesky', { text })
       return { remoteId: 'dry-run', remoteUrl: canonicalUrl }
     }
@@ -97,7 +96,7 @@ export const blueskyFactory = (): PlatformClient => ({
   },
 })
 
-function truncateForBluesky(summary: string, canonicalUrl: string): string {
+function truncateForBluesky(summary: string): string {
   const budget = MAX_CHARS
   if (summary.length <= budget) return summary
   const slice = summary.slice(0, budget - 1)

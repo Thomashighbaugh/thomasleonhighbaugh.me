@@ -13,7 +13,6 @@ import { instantiate } from './platforms/index.js'
 import type { Platform } from './config.js'
 import type { BlogPost } from './frontmatter.js'
 import type { CrosspostConfig } from './config.js'
-import type { RenderResult } from './renderer.js'
 import type { PostState } from './state.js'
 
 export interface DispatchOptions {
@@ -56,7 +55,6 @@ export async function dispatch(
 ): Promise<DispatchReport> {
   const platforms = options.platforms ?? (Object.keys(config.platforms) as Platform[])
   if (platforms.length === 0) {
-    // eslint-disable-next-line no-console
     console.warn('No platforms enabled — nothing to do.')
     return emptyReport()
   }
@@ -69,7 +67,6 @@ export async function dispatch(
   })
 
   if (posts.length === 0) {
-    // eslint-disable-next-line no-console
     console.warn('No posts matched the selection criteria.')
     return emptyReport()
   }
@@ -127,7 +124,6 @@ export async function dispatch(
         const message = err instanceof Error ? err.message : String(err)
         postEntry.results.push({ platform, status: 'failed', error: message })
         report.summary.totalFailed++
-        // eslint-disable-next-line no-console
         console.error(`[${platform}] ${post.slug}: ${message}`)
       }
     }

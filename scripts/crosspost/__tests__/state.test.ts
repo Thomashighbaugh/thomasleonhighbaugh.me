@@ -6,7 +6,7 @@ import {
   markPosted,
   saveState,
   shouldPost,
-} from '../../src/state.js'
+} from '../src/state.js'
 import { mkdtemp, rm, writeFile, readFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'

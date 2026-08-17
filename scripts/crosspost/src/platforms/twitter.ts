@@ -61,7 +61,6 @@ export const twitterFactory = (): PlatformClient => ({
     const text = truncateForTwitter(post, canonicalUrl)
 
     if (ctx.dryRun) {
-      // eslint-disable-next-line no-console
       console.log('[dry-run] twitter', { text })
       return { remoteId: 'dry-run', remoteUrl: canonicalUrl }
     }

@@ -10,6 +10,9 @@
  * a single helper to check whether it is enabled.
  */
 
+import { fileURLToPath } from 'node:url'
+import { join } from 'node:path'
+
 export type Platform =
   | 'devto'
   | 'hashnode'
@@ -51,11 +54,20 @@ export interface PlatformConfig {
  * Read the env into a strongly-typed config. Missing platforms are simply
  * absent from the returned `platforms` map; the dispatcher iterates only
  * the keys that exist.
+ *
+ * Repo root is three levels up from this file:
+ *   <repo>/scripts/crosspost/src/config.ts
+ * Anchoring the default paths here (instead of CWD) makes the tool work
+ * regardless of the working directory — the GitHub workflows run with
+ * `working-directory: scripts/crosspost`, so CWD-relative defaults would
+ * point at `scripts/crosspost/src/content/blog` and never find the posts.
  */
+const repoRoot = fileURLToPath(new URL('../../..', import.meta.url))
+
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): CrosspostConfig {
   const siteUrl = (env.SITE_URL ?? 'https://thomasleonhighbaugh.me').replace(/\/$/, '')
-  const contentDir = env.CROSSPOST_CONTENT_DIR ?? 'src/content/blog'
-  const stateFile = env.CROSSPOST_STATE_FILE ?? '.crosspost-state.json'
+  const contentDir = env.CROSSPOST_CONTENT_DIR ?? join(repoRoot, 'src/content/blog')
+  const stateFile = env.CROSSPOST_STATE_FILE ?? join(repoRoot, '.crosspost-state.json')
   const dryRun = (env.DRY_RUN ?? 'false').toLowerCase() === 'true'
 
   const platforms: Partial<Record<Platform, PlatformConfig>> = {}

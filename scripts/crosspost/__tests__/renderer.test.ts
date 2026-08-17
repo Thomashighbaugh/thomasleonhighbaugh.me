@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { render } from '../../src/renderer.js'
-import type { BlogPost } from '../../src/frontmatter.js'
+import { render } from '../src/renderer.js'
+import type { BlogPost } from '../src/frontmatter.js'
 
 const SITE = 'https://thomasleonhighbaugh.me'
 

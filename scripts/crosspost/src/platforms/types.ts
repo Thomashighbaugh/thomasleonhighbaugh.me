@@ -104,7 +104,6 @@ export async function httpRequest(url: string, opts: HttpOptions = {}): Promise<
  * the dry-run is just to verify the payload shape.
  */
 export function dryRunRequest(url: string, opts: HttpOptions, payload: unknown): HttpResponse {
-  // eslint-disable-next-line no-console
   console.log('[dry-run]', opts.method ?? 'GET', url, JSON.stringify(payload, null, 2))
   return {
     status: 200,

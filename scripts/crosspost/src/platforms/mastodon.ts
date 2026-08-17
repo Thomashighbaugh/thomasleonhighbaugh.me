@@ -36,7 +36,6 @@ export const mastodonFactory = (): PlatformClient => ({
     const text = truncateForMastodon(post.frontmatter.summary, canonicalUrl)
 
     if (ctx.dryRun) {
-      // eslint-disable-next-line no-console
       console.log('[dry-run] mastodon', { text, visibility: 'public' })
       return { remoteId: 'dry-run', remoteUrl: canonicalUrl }
     }

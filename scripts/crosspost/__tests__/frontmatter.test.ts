@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parsePost } from '../../src/frontmatter.js'
+import { parsePost } from '../src/frontmatter.js'
 
 describe('parsePost', () => {
   it('extracts frontmatter and body from a markdown file', () => {

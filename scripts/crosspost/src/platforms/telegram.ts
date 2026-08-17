@@ -31,7 +31,6 @@ export const telegramFactory = (): PlatformClient => ({
     const text = formatTelegramMessage(post, canonicalUrl)
 
     if (ctx.dryRun) {
-      // eslint-disable-next-line no-console
       console.log('[dry-run] telegram', { text })
       return { remoteId: 'dry-run', remoteUrl: canonicalUrl }
     }

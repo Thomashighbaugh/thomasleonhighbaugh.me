@@ -24,7 +24,7 @@ export const linkedinFactory = (): PlatformClient => ({
 
     // --- AUTO-DISCOVERY ---
     // If memberId isn't provided, fetch it using the token.
-    const memberId = ctx.config.credentials.memberId ?? await this.fetchMemberId(accessToken)
+    const memberId = ctx.config.credentials.memberId ?? (await fetchMemberId(accessToken))
 
     const authorUrn = `urn:li:person:${memberId}`
     const canonicalUrl = `${ctx.siteUrl}/blog/${post.slug}/`
@@ -51,7 +51,6 @@ export const linkedinFactory = (): PlatformClient => ({
     }
 
     if (ctx.dryRun) {
-      // eslint-disable-next-line no-console
       console.log('[dry-run] linkedin', JSON.stringify(payload, null, 2))
       return { remoteId: 'dry-run', remoteUrl: canonicalUrl }
     }
@@ -80,26 +79,25 @@ export const linkedinFactory = (): PlatformClient => ({
 
     return { remoteId: id, remoteUrl }
   },
-
-  async fetchMemberId(accessToken: string): Promise<string> {
-    const res = await httpRequest(`${LINKEDIN_API}/me`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'X-Restli-Protocol-Version': '2.0.0',
-      },
-    })
-    if (res.status !== 200) {
-      throw new Error(`LinkedIn: Failed to auto-discover Member ID. Check scopes (requires r_liteprofile or r_member_social). Status: ${res.status} ${res.body}`)
-    }
-    const data = res.json() as { id: string } | null
-    if (!data?.id) throw new Error(`LinkedIn: Failed to parse Member ID from response: ${res.body}`)
-    
-    // eslint-disable-next-line no-console
-    console.log(`Auto-discovered LinkedIn Member ID: ${data.id}`)
-    return data.id
-  }
 })
+
+async function fetchMemberId(accessToken: string): Promise<string> {
+  const res = await httpRequest(`${LINKEDIN_API}/me`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'X-Restli-Protocol-Version': '2.0.0',
+    },
+  })
+  if (res.status !== 200) {
+    throw new Error(`LinkedIn: Failed to auto-discover Member ID. Check scopes (requires r_liteprofile or r_member_social). Status: ${res.status} ${res.body}`)
+  }
+  const data = res.json() as { id: string } | null
+  if (!data?.id) throw new Error(`LinkedIn: Failed to parse Member ID from response: ${res.body}`)
+
+  console.log(`Auto-discovered LinkedIn Member ID: ${data.id}`)
+  return data.id
+}
 
 function truncateForLinkedIn(post: BlogPost, canonicalUrl: string): string {
   const header = `${post.frontmatter.title}\n\n`

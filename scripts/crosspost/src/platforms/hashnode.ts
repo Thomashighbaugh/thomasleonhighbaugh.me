@@ -62,7 +62,6 @@ export const hashnodeFactory = (): PlatformClient => ({
     }
 
     if (ctx.dryRun) {
-      // eslint-disable-next-line no-console
       console.log('[dry-run] hashnode', JSON.stringify(payload, null, 2))
       return { remoteId: 'dry-run', remoteUrl: canonicalUrl }
     }

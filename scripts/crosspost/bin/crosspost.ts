@@ -12,7 +12,7 @@
  */
 
 import { dispatch, listPosts, summarizeReport } from '../src/index.js'
-import { loadConfig, resolveTargetPlatforms, type Platform } from '../src/config.js'
+import { loadConfig, resolveTargetPlatforms } from '../src/config.js'
 import { performTwitterOAuth } from '../src/auth/twitter.js'
 
 interface ParsedArgs {

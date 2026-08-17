@@ -42,7 +42,6 @@ export const devtoFactory = (): PlatformClient => ({
     }
 
     if (ctx.dryRun) {
-      // eslint-disable-next-line no-console
       console.log('[dry-run] dev.to', JSON.stringify(payload, null, 2))
       return { remoteId: 'dry-run', remoteUrl: canonicalUrl }
     }

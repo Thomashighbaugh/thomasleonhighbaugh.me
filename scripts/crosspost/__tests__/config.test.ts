@@ -1,12 +1,16 @@
 import { describe, it, expect } from 'vitest'
-import { loadConfig, resolveTargetPlatforms } from '../../src/config.js'
+import { fileURLToPath } from 'node:url'
+import { join } from 'node:path'
+import { loadConfig, resolveTargetPlatforms } from '../src/config.js'
+
+const repoRoot = fileURLToPath(new URL('../../..', import.meta.url))
 
 describe('loadConfig', () => {
   it('returns defaults when no env vars are set', () => {
     const config = loadConfig({})
     expect(config.siteUrl).toBe('https://thomasleonhighbaugh.me')
-    expect(config.contentDir).toBe('src/content/blog')
-    expect(config.stateFile).toBe('.crosspost-state.json')
+    expect(config.contentDir).toBe(join(repoRoot, 'src/content/blog'))
+    expect(config.stateFile).toBe(join(repoRoot, '.crosspost-state.json'))
     expect(config.dryRun).toBe(false)
     expect(Object.keys(config.platforms)).toEqual([])
   })

@@ -68,11 +68,11 @@ export async function loadAllPosts(contentDir: string): Promise<BlogPost[]> {
   return posts
 }
 
-function parsePost(slug: string, filePath: string, raw: string): BlogPost {
+export function parsePost(slug: string, filePath: string, raw: string): BlogPost {
   const parsed = matter(raw)
   const data = parsed.data as Record<string, unknown>
 
-  const title = String(data.title ?? slug)
+  const title = data.title ? String(data.title) : slug
   const summary = String(data.summary ?? '')
   const description = data.description ? String(data.description) : undefined
   const date = coerceDate(data.date) ?? new Date(0)
