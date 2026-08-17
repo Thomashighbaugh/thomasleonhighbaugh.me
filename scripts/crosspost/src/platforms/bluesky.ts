@@ -11,8 +11,10 @@
  *   BLUESKY_IDENTIFIER   — handle (e.g. tlh.bsky.social) or email
  *   BLUESKY_APP_PASSWORD — app password (Settings → App Passwords)
  *
- * We talk to the public `https://public.api.bsky.app` PDS by default;
- * a custom PDS host can be added later if needed.
+ * We talk to the public `https://bsky.social` PDS by default; a custom PDS
+ * host can be added later if needed. Note: `public.api.bsky.app` is a
+ * read-only public API and does NOT support `createSession` (it returns
+ * 405) — authentication must go through a real PDS like bsky.social.
  */
 
 import type { PlatformClient, PublishContext, PublishResult } from './types.js'
@@ -20,7 +22,7 @@ import { httpRequest } from './types.js'
 import type { BlogPost } from '../frontmatter.js'
 import type { RenderResult } from '../renderer.js'
 
-const PDS_HOST = 'https://public.api.bsky.app'
+const PDS_HOST = 'https://bsky.social'
 const MAX_CHARS = 290
 
 export const blueskyFactory = (): PlatformClient => ({

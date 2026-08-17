@@ -36,7 +36,9 @@ export const devtoFactory = (): PlatformClient => ({
         description,
         body_markdown: wrapWithFooter(rendered.markdown, canonicalUrl),
         published: true,
-        tags: post.frontmatter.tags.slice(0, 4), // dev.to allows 4 tags max
+        // dev.to tags must be alphanumeric (no spaces, hyphens, or special
+        // chars). Sanitize each tag and drop any that become empty.
+        tags: sanitizeDevtoTags(post.frontmatter.tags).slice(0, 4), // dev.to allows 4 tags max
         canonical_url: canonicalUrl,
       },
     }
@@ -69,4 +71,15 @@ export const devtoFactory = (): PlatformClient => ({
 
 function wrapWithFooter(markdown: string, canonicalUrl: string): string {
   return `${markdown}\n\n---\n\nOriginally published at [${canonicalUrl}](${canonicalUrl}).`
+}
+
+/**
+ * dev.to tags must be alphanumeric — no spaces, hyphens, or special
+ * characters. Lowercase, strip anything non-alphanumeric, and drop tags
+ * that collapse to empty.
+ */
+function sanitizeDevtoTags(tags: string[]): string[] {
+  return tags
+    .map((t) => t.toLowerCase().replace(/[^a-z0-9]/g, ''))
+    .filter((t) => t.length > 0)
 }

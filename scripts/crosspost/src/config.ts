@@ -65,7 +65,10 @@ export interface PlatformConfig {
 const repoRoot = fileURLToPath(new URL('../../..', import.meta.url))
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): CrosspostConfig {
-  const siteUrl = (env.SITE_URL ?? 'https://thomasleonhighbaugh.me').replace(/\/$/, '')
+  // `??` only falls back on null/undefined, not empty string. GitHub Actions
+  // passes an empty string for unset `vars.SITE_URL`, which would produce a
+  // relative canonical URL like "/blog/<slug>/" and break every platform.
+  const siteUrl = (env.SITE_URL || 'https://thomasleonhighbaugh.me').replace(/\/$/, '')
   const contentDir = env.CROSSPOST_CONTENT_DIR ?? join(repoRoot, 'src/content/blog')
   const stateFile = env.CROSSPOST_STATE_FILE ?? join(repoRoot, '.crosspost-state.json')
   const dryRun = (env.DRY_RUN ?? 'false').toLowerCase() === 'true'
@@ -117,11 +120,14 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): CrosspostConfi
     }
   }
 
-  // LinkedIn — OAuth2 access token
+  // LinkedIn — OAuth2 access token. The author URN is optional; when
+  // provided it avoids the `/me` auto-discovery call (which needs the
+  // `r_liteprofile` scope that many tokens lack).
   if (env.LINKEDIN_ACCESS_TOKEN) {
     platforms.linkedin = {
       credentials: {
         accessToken: env.LINKEDIN_ACCESS_TOKEN,
+        authorUrn: env.LINKEDIN_AUTHOR_URN,
       },
     }
   }

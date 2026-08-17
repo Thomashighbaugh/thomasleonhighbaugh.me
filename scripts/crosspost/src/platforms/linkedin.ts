@@ -22,11 +22,13 @@ export const linkedinFactory = (): PlatformClient => ({
       throw new Error('LinkedIn: LINKEDIN_ACCESS_TOKEN is required')
     }
 
-    // --- AUTO-DISCOVERY ---
-    // If memberId isn't provided, fetch it using the token.
-    const memberId = ctx.config.credentials.memberId ?? (await fetchMemberId(accessToken))
-
-    const authorUrn = `urn:li:person:${memberId}`
+    // --- AUTHOR URN ---
+    // Prefer the configured author URN (LINKEDIN_AUTHOR_URN). Only fall back
+    // to auto-discovery via `/me` when it's absent — that endpoint needs the
+    // `r_liteprofile` scope, which many tokens don't have.
+    const authorUrn =
+      ctx.config.credentials.authorUrn ??
+      `urn:li:person:${await fetchMemberId(accessToken)}`
     const canonicalUrl = `${ctx.siteUrl}/blog/${post.slug}/`
     const text = truncateForLinkedIn(post, canonicalUrl)
 

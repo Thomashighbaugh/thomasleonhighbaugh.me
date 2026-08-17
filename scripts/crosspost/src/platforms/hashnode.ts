@@ -16,7 +16,7 @@ import { httpRequest } from './types.js'
 import type { BlogPost } from '../frontmatter.js'
 import type { RenderResult } from '../renderer.js'
 
-const HASHNODE_API = 'https://api.hashnode.com'
+const HASHNODE_API = 'https://gql-beta.hashnode.com'
 
 const PUBLISH_MUTATION = /* GraphQL */ `
   mutation PublishPost($input: PublishPostInput!) {
