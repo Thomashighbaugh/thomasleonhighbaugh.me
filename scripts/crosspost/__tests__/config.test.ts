@@ -31,16 +31,6 @@ describe('loadConfig', () => {
     expect(config.platforms.devto?.credentials.apiKey).toBe('abc')
   })
 
-  it('enables Hashnode when both token and publication id are set', () => {
-    const config = loadConfig({ HASHNODE_TOKEN: 'tok', HASHNODE_PUBLICATION_ID: 'pub' })
-    expect(config.platforms.hashnode).toBeDefined()
-  })
-
-  it('does not enable Hashnode with only one credential', () => {
-    const config = loadConfig({ HASHNODE_TOKEN: 'tok' })
-    expect(config.platforms.hashnode).toBeUndefined()
-  })
-
   it('enables Mastodon with instance and token', () => {
     const config = loadConfig({ MASTODON_INSTANCE: 'https://mastodon.social/', MASTODON_TOKEN: 'x' })
     expect(config.platforms.mastodon?.credentials.instance).toBe('https://mastodon.social')
@@ -75,13 +65,12 @@ describe('resolveTargetPlatforms', () => {
     dryRun: false,
     platforms: {
       devto: { credentials: {} },
-      hashnode: { credentials: {} },
-    } as Partial<Record<'devto' | 'hashnode' | 'mastodon', { credentials: Record<string, string | undefined> }>>,
+    } as Partial<Record<'devto' | 'mastodon', { credentials: Record<string, string | undefined> }>>,
   }
 
   it('returns all enabled platforms when no override is provided', () => {
     const targets = resolveTargetPlatforms(baseConfig as never, undefined)
-    expect(targets.sort()).toEqual(['devto', 'hashnode'])
+    expect(targets.sort()).toEqual(['devto'])
   })
 
   it('filters to the requested subset', () => {

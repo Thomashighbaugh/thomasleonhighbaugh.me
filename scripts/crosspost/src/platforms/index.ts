@@ -5,7 +5,6 @@
 import type { Platform, PlatformConfig } from '../config.js'
 import type { PlatformClient, PlatformFactory } from './types.js'
 import { devtoFactory } from './devto.js'
-import { hashnodeFactory } from './hashnode.js'
 import { mastodonFactory } from './mastodon.js'
 import { blueskyFactory } from './bluesky.js'
 import { telegramFactory } from './telegram.js'
@@ -14,7 +13,6 @@ import { twitterFactory } from './twitter.js'
 
 const FACTORIES: Record<Platform, PlatformFactory> = {
   devto: devtoFactory,
-  hashnode: hashnodeFactory,
   mastodon: mastodonFactory,
   bluesky: blueskyFactory,
   telegram: telegramFactory,

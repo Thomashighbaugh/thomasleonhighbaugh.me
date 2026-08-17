@@ -1,7 +1,7 @@
 /**
  * Markdown → platform-specific rendering.
  *
- * dev.to, Hashnode, LinkedIn articles, and X long-form posts all accept
+ * dev.to, LinkedIn articles, and X long-form posts all accept
  * either markdown or HTML. Mastodon, Bluesky, Telegram, and short X posts
  * need a plain-text summary with a link.
  *

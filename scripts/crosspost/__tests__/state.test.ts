@@ -57,8 +57,8 @@ describe('state', () => {
     it('adds to existing entries without losing other platforms', () => {
       let state = emptyState()
       state = markPosted(state, 'hello', 'devto', '1')
-      state = markPosted(state, 'hello', 'hashnode', '2')
-      expect(state.hello?.posted).toEqual({ devto: '1', hashnode: '2' })
+      state = markPosted(state, 'hello', 'mastodon', '2')
+      expect(state.hello?.posted).toEqual({ devto: '1', mastodon: '2' })
     })
 
     it('overwrites an existing platform entry', () => {
@@ -85,7 +85,7 @@ describe('state', () => {
 
     it('returns true on a different platform', () => {
       const state = markPosted(emptyState(), 'hello', 'devto', '1')
-      expect(shouldPost(state, 'hello', 'hashnode', false)).toBe(true)
+      expect(shouldPost(state, 'hello', 'mastodon', false)).toBe(true)
     })
   })
 

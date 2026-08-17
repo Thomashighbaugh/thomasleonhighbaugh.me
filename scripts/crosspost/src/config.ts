@@ -15,7 +15,6 @@ import { join } from 'node:path'
 
 export type Platform =
   | 'devto'
-  | 'hashnode'
   | 'mastodon'
   | 'bluesky'
   | 'telegram'
@@ -24,7 +23,6 @@ export type Platform =
 
 export const ALL_PLATFORMS: readonly Platform[] = [
   'devto',
-  'hashnode',
   'mastodon',
   'bluesky',
   'telegram',
@@ -78,16 +76,6 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): CrosspostConfi
   // dev.to — single API key
   if (env.DEVTO_API_KEY) {
     platforms.devto = { credentials: { apiKey: env.DEVTO_API_KEY } }
-  }
-
-  // Hashnode — Personal Access Token + Publication id (for the story API)
-  if (env.HASHNODE_TOKEN && env.HASHNODE_PUBLICATION_ID) {
-    platforms.hashnode = {
-      credentials: {
-        token: env.HASHNODE_TOKEN,
-        publicationId: env.HASHNODE_PUBLICATION_ID,
-      },
-    }
   }
 
   // Mastodon — instance URL + access token
