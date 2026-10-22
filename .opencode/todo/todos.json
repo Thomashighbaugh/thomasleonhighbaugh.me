@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "mvj6eg04-cuqnu",
+      "text": "Outline, draft and write a blog post which discusses the proliferation of tools and plugins related to AI Coding Agents that are wholly unnecessary if one spends the time configuring the harness correctly. \n\nA notable examplee are tools that compress the output of tool usage, shaving at best ~20% of tokens from tools being run that produce excess when having the coding agent write tools generating less bloated outputs in place of an external tool that mitigates the negatives of another external tools is both inefficient but also the cause of the descent into dependency hell that having the coding agent write code for you should be mitigated by one being able to quickly derive the precise tool they need instead of interlocking dependencoes on external tools that only partially fit their needs.",
+      "createdAt": "2026-10-22T06:44:31.492Z"
+    }
+  ]
+}
