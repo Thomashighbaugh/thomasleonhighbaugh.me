@@ -13,7 +13,7 @@ tags:
 ---
 ![Portfolio refresh banner](./banner_portfolio.png "Updated portfolio website design showcase")
 
-As a dedicated web developer, I've always been passionate about creating visually appealing and accessible websites. Recently, I embarked on a journey to revamp my portfolio site, aiming to harness the latest web technologies while ensuring top-notch accessibility for all users. In the ever-evolving realm of web development, staying current with the latest trends and techniques is key. By leveraging cutting-edge technologies like CSS Grid, CSS Flexbox, and responsive design, I aimed to craft a website that not only wows with its visual aesthetics but also functions seamlessly, catering to users of all abilities and disabilities. My ultimate goal? A showcase of my skills and talents wrapped in a user-friendly experience.
+I rebuilt my portfolio site. The goals were simple: make it look right, keep it accessible, and use current CSS instead of working around it. That meant CSS Grid and Flexbox for layout, and one responsive design rather than a desktop page squeezed down to a phone. Visual polish matters, but a site nobody can navigate is a poster, not a portfolio.
 
 ## Shaping My Vision
 

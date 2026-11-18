@@ -40,7 +40,7 @@ This approach has actually made me a better developer. When you have to consciou
 
 ## The Developer Experience Hit the Sweet Spot
 
-Here's what I love about Astro: it doesn't try to revolutionize everything. The file-based routing works exactly like you'd expect. The component syntax looks familiar if you've used React. TypeScript works out of the box without any weird config files.
+Here's what I love about Astro: it doesn't try to be clever. The file-based routing works exactly like you'd expect. The component syntax looks familiar if you've used React. TypeScript works out of the box without any weird config files.
 
 Writing content is actually enjoyable now. I can write in Markdown for most things, but if I need to embed an interactive component, I just drop it in with MDX. No weird workarounds or complex build setups.
 

@@ -46,7 +46,7 @@ Next.js 13 comes packed with goodies. Improved startup performance, automatic Re
 
 ### Motivation Behind the Upgrade
 
-The decision to upgrade wasn't just about riding the wave of the latest tech trends. Next.js 13 aligns seamlessly with my goal of delivering a faster and more optimized user experience on my portfolio site. The motivation stems from a commitment to providing a cutting-edge showcase of my work.
+The decision to upgrade wasn't just about riding the wave of the latest tech trends. Next.js 13 fits what I wanted for the portfolio: a faster page and a better way to organize it. The motivation was straightforward, because if the site is the work sample, it should behave like one.
 
 ### Breaking Changes and Challenges
 

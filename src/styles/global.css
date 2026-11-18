@@ -111,6 +111,25 @@ header, footer {
   @apply transition-all duration-300 ease-in-out;
 }
 
+/* Decorative motion opt-out. The starfields, particles, twinkle stars and
+   meteors are pure decoration, and the .animate reveal is a transition, not
+   content. Honour the OS setting instead of animating regardless. */
+@media (prefers-reduced-motion: reduce) {
+  #particles1, #particles2, #particles3,
+  #stars1, #stars2, #stars3,
+  #twinkle-star.twinkle,
+  #meteors .meteor {
+    animation: none !important;
+  }
+
+  .animate,
+  .animate.show {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /** Light theme particles on home page */
 @keyframes animateParticle {
   from {

@@ -1,7 +1,7 @@
 ---
 title: "NeoVim Bleeding Edge Installation"
 description: "Step-by-step guide to installing the latest NeoVim from Git with Lua configuration support, dependencies, and community configuration recommendations."
-summary: "Install the latest NeoVim with cutting-edge features and Lua configuration support using this comprehensive guide covering installation, dependencies, and setup."
+summary: "Install the latest NeoVim with Lua configuration support: a guide to installation, dependencies, and setup."
 date: "Jul 04 2021"
 draft: false
 tags:

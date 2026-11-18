@@ -126,7 +126,7 @@ client.connect_signal(
 )
 ```
 
-With this configuration, you'll enjoy a seamless experience when switching between maximized and floating windows in AwesomeWM. Your window management just got more convenient. Here's the complete file for reference:
+With this configuration, switching between maximized and floating windows in AwesomeWM behaves the way it should. Here's the complete file for reference:
 
 ```lua
 local awful = require('awful')

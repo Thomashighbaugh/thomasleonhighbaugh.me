@@ -57,6 +57,8 @@
     }, 2500);
   }
 
-  setInterval(generateTwinkleStar, 5000);
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    setInterval(generateTwinkleStar, 5000);
+  }
 </script>
   

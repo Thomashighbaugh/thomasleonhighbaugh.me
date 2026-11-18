@@ -1,3 +1,8 @@
+---
+name: blog-research
+description: Research a topic for a thomasleonhighbaugh.me blog post and produce a structured research brief — primary sources, counterarguments, and cultural references. Use when asked to "research X for a blog post" or "find sources on Y", or when a topic needs material gathered before blog-writer can draft.
+---
+
 # Blog Research Skill
 
 Research a topic for a thomasleonhighbaugh.me blog post and produce a structured research brief.

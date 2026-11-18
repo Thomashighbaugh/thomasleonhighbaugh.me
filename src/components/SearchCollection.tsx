@@ -67,6 +67,12 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
     if (wrapper) {
       wrapper.style.minHeight = "unset";
     }
+    // Land on a pre-filtered view when arriving from a tag link, e.g. /blog?tag=AI
+    const tagParam = new URLSearchParams(window.location.search).get("tag")
+    if (tagParam) {
+      const match = tags.find((t) => t.toLowerCase() === tagParam.toLowerCase())
+      if (match) setFilter(new Set([match]))
+    }
   })
 
   const isProjects = entry_name === "projects";
@@ -81,7 +87,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
           {filter().size > 0 && (
             <button
               onClick={clearFilters}
-              class="absolute flex justify-center items-center h-full w-10 right-0 top-0 stroke-neutral-400 dark:stroke-neutral-500 hover:stroke-neutral-600 hover:dark:stroke-neutral-300"
+              class="absolute flex justify-center items-center h-full w-10 right-0 top-0 stroke-black/60 dark:stroke-white/60 hover:stroke-black hover:dark:stroke-white"
             >
               <svg class="size-5">
                 <use href={`/ui.svg#x`} />
@@ -143,7 +149,7 @@ export default function SearchCollection({ entry_name, data, tags }: Props) {
           <div class="text-sm uppercase">
             SHOWING {collection().length} OF {data.length} {entry_name}
           </div>
-          <button onClick={toggleDescending} class='flex flex-row gap-1 stroke-neutral-400 dark:stroke-neutral-500 hover:stroke-neutral-600 hover:dark:stroke-neutral-300 text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 hover:dark:text-neutral-300'>
+          <button onClick={toggleDescending} class='flex flex-row gap-1 stroke-black/75 dark:stroke-white/75 hover:stroke-black hover:dark:stroke-white text-black/75 dark:text-white/75 hover:text-black hover:dark:text-white'>
             <div class="text-sm uppercase">
               {descending() ? "DESCENDING" : "ASCENDING"}
             </div>

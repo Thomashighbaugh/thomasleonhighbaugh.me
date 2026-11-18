@@ -35,12 +35,24 @@ import { SITE } from "@consts"
   <script is:inline src="/js/bg.js"></script>
   
   <!-- HERO -->
-  <section class="relative h-screen w-full">
-    <div class="animate h-full w-full flex flex-col items-center justify-center gap-8">
-          <SVGHero />
-          <div class="relative z-50">
-            <h1 class="text-6xl font-semibold text-[#292A31] absolute" style="text-shadow: 2px 2px 0 #2d2d2d;">Thomas Leon Highbaugh</h1>
-            <h1 class="text-6xl font-semibold text-white relative" style="-webkit-text-stroke: 2.5px #37383F; -webkit-text-stroke-linejoin: round; paint-order: stroke;">Thomas Leon Highbaugh</h1>
+  <section class="hero relative flex min-h-0 w-full flex-1 flex-col">
+    <div class="animate flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-8 px-6 py-12">
+          <div class="hero-fit">
+            <SVGHero />
+          </div>
+          <div class="z-50 flex w-fit max-w-full flex-col items-stretch">
+            <h1 class="hero-name relative self-center font-semibold leading-none">
+              <span aria-hidden="true" class="hero-name-shadow absolute top-0 left-0 whitespace-nowrap">Thomas Leon Highbaugh</span>
+              <span class="hero-name-face relative whitespace-nowrap">Thomas Leon Highbaugh</span>
+            </h1>
+            <p class="hero-role mt-5 max-w-full self-end rounded bg-black px-3 py-1 text-center text-sm text-white dark:bg-white dark:text-black">
+              Software engineer &middot; LLM tooling and Linux systems
+            </p>
+            <nav aria-label="Primary" class="mt-4 flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-sm">
+              <a href="/about" class="text-black/60 underline decoration-[.5px] decoration-black/25 underline-offset-4 hover:text-black dark:text-white/60 dark:decoration-white/25 dark:hover:text-white blend">About</a>
+              <a href="/projects" class="text-black/60 underline decoration-[.5px] decoration-black/25 underline-offset-4 hover:text-black dark:text-white/60 dark:decoration-white/25 dark:hover:text-white blend">Projects</a>
+              <a href="https://resume.thomasleonhighbaugh.me" target="_blank" rel="noopener" class="text-black/60 underline decoration-[.5px] decoration-black/25 underline-offset-4 hover:text-black dark:text-white/60 dark:decoration-white/25 dark:hover:text-white blend">Resume</a>
+            </nav>
           </div>
     </div>
   </section>
@@ -64,24 +76,83 @@ import { SITE } from "@consts"
 </PageLayout>
 
 <style>
-  /* Make the page exactly viewport height */
-  html, body {
-    height: 100vh;
+  /* Only the home hero may shrink below its content. Article pages keep the
+     default automatic minimum so a long post pushes the footer down instead
+     of scrolling underneath it. */
+  :global(main:has(> section.hero)) {
+    min-height: 0;
+  }
+
+  /* The mark is drawn inside the middle 75% of a 200-unit viewBox, so most of
+     the <svg> is empty padding. Sizing the layout by the svg made the padding
+     decide the height: the art shrank away from its slot and the leftover space
+     landed between the mark and the h1. So size the box to the mark instead.
+     26rem is the chrome around it (header, slim footer, section padding, text
+     block, gap) at desktop sizes; the clamp keeps the footer on screen. */
+  .hero-fit {
+    position: relative;
+    width: min(100%, 55rem);
+    width: min(100%, 55rem, calc(100dvh - 26rem));
+    aspect-ratio: 1 / 1;
+    margin-inline: auto;
     overflow: hidden;
   }
-  
-  main {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-  
-  footer {
+
+  /* Scale the inner square to 128% of the box and centre it. The 4/3 that would
+     make the drawing fill the box exactly is trimmed to 128% so the rotating
+     meteor keeps a margin at the crop edge; what gets cropped is viewBox
+     padding, not pixels. */
+  .hero-fit > :global(div) {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
+    top: 50%;
+    left: 50%;
+    width: 128%;
+    aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-fit :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* On a phone the viewport is tall, so width alone decides the art size and the
+     group centres itself vertically. */
+  @media (max-width: 640px) {
+    .hero-fit {
+      width: 100%;
+    }
+  }
+
+  /* 3.75rem is the old text-6xl ceiling, so desktop is unchanged. */
+  .hero-name {
+    font-size: clamp(1.15rem, 6.4vw, 3.75rem);
+  }
+
+  /* Same construction as the TLH mark in SVGHero.astro, which stacks two
+     <text> layers: a dark copy dropped 6 units on a 54-unit face (0.111em)
+     with a 2-unit stroke (0.037em), under a white copy with a 2.5-unit
+     stroke (0.046em). Both strokes are em-based so the ratio survives the
+     clamp on small screens instead of thinning out. */
+  .hero-name-shadow {
+    color: #292a31;
+    -webkit-text-stroke: 0.037em #2d2d2d;
+    -webkit-text-stroke-linejoin: round;
+    transform: translateY(0.111em);
+  }
+
+  .hero-name-face {
+    color: #ffffff;
+    -webkit-text-stroke: 0.046em #37383f;
+    -webkit-text-stroke-linejoin: round;
+    paint-order: stroke;
+  }
+
+  /* The h1..h6 rule in global.css gives BlackHanSans to headings, and the
+     nav rule gives it to the links below. A <p> gets neither, so it has to
+     be set explicitly or the pill falls back to Atkinson. */
+  .hero-role {
+    font-family: "BlackHanSans", sans-serif;
   }
 </style>

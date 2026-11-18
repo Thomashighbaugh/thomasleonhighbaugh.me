@@ -10,16 +10,23 @@ import JsonLd from "@components/JsonLd.astro"
 // Create the static blog pages
 export async function getStaticPaths() {
 	const posts = await getCollection("blog")
-	return posts.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}))
+	return posts
+		.filter((post) => !post.data.draft)
+		.map((post) => ({
+			params: { slug: post.slug },
+			props: post,
+		}))
 }
 
 // Get the requested post
 type Props = CollectionEntry<"blog">
 const post = Astro.props
 const { title, summary, date } = post.data
+
+// Table of contents for long posts only; a four-heading post does not need one.
+const { headings } = await post.render()
+const toc = headings.filter((heading) => heading.depth === 2 || heading.depth === 3)
+const showToc = toc.length >= 5
 ---
 
 <PageLayout title={title} description={summary}>
@@ -29,6 +36,20 @@ const { title, summary, date } = post.data
     </div>
   </TopLayout>
   <BottomLayout>
+    {showToc && (
+      <nav aria-label="Contents" class="animate mb-10 border-y border-black/15 dark:border-white/20 py-4">
+        <p class="mb-2 text-sm font-semibold uppercase text-black dark:text-white">Contents</p>
+        <ol class="space-y-1 text-sm">
+          {toc.map((heading) => (
+            <li class={heading.depth === 3 ? "pl-4" : ""}>
+              <a href={`#${heading.slug}`} class="text-black/70 dark:text-white/70 hover:text-black hover:dark:text-white underline decoration-[.5px] decoration-transparent hover:decoration-black/40 hover:dark:decoration-white/40 underline-offset-4 blend">
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
     <div class="animate">
       <ArticleBottomLayout entry={post} />
     </div>

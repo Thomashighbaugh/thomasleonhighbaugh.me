@@ -50,7 +50,7 @@ With a small footprint and minimal system resource consumption, `doas` shines in
 
 ### 5. **Ergonomics**
 
-While seemingly minor, the act of typing `doas` versus `sudo` can be a game-changer. For exclusive Linux users like myself, the comfort of typing `doas` becomes a noteworthy advantage.
+While seemingly minor, typing `doas` instead of `sudo` is one less thing to think about. For Linux-only users like myself, that is the entire advantage.
 
 ## In Conclusion
 

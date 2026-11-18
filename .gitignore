@@ -20,3 +20,13 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 .opencode/state/
+
+# taste-skill stand-in asset libraries (this project supplies its own imagery)
+# regenerable with: npx skills add Leonxlnx/taste-skill -y
+.opencode/skills/design-taste-frontend/assets/photos/
+.opencode/skills/design-taste-frontend/assets/objects/
+.opencode/skills/design-taste-frontend/assets/icons/
+.opencode/skills/design-taste-frontend/assets/layout/
+.opencode/skills/design-taste-frontend/assets/scenes/
+.opencode/skills/design-taste-frontend/assets/moments/
+.taste-skill/

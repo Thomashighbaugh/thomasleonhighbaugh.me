@@ -10,10 +10,12 @@ import JsonLd from "@components/JsonLd.astro"
 // Create the static projects pages
 export async function getStaticPaths() {
 	const projects = await getCollection("projects")
-	return projects.map((project) => ({
-		params: { slug: project.slug },
-		props: project,
-	}))
+	return projects
+		.filter((project) => !project.data.draft)
+		.map((project) => ({
+			params: { slug: project.slug },
+			props: project,
+		}))
 }
 
 // Get the requested project

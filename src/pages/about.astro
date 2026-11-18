@@ -47,11 +47,11 @@ const stack = [
       <!-- About Section -->
       <section class="animate">
         <article>
-          <p>I am a <b><i>passionate LLM advocate</i></b>, <b><i>Linux enthusiast</i></b>, <b><i>mentally agile software engineering autodidact</i></b>, <b><i>NixOS devotee</i></b>, <b><i>architectural purist</i></b>, and <b><i>perpetual systems thinker</i></b>.</p>
-          <p>My intellectual curiosity drives me to explore the intersection of human cognition and artificial intelligence, while my hands remain firmly planted in the pragmatic world of elegant code architecture. I find particular joy in the reproducible, declarative beauty of NixOS—because who doesn't appreciate a system that treats configuration as code and makes "it works on my machine" an antiquated phrase?</p>
-          <p>Philosophy meets practice</p>
+          <p>I am a software engineer working at the seam between large language models and the systems they run on. Most of what I write here comes out of that work: agent harnesses, NixOS configuration, TypeScript, and whatever broke that week.</p>
+          <p>I have no formal training in computer science. I learned by breaking installs, reading source, and rebuilding the same configuration until it held. That path makes you suspicious of anything you cannot reproduce from scratch, which is why this site is more about reproducible systems than about frameworks.</p>
+          <h2 class="text-xl font-semibold text-black dark:text-white mt-8 mb-2">Philosophy meets practice</h2>
           <p>I believe that large language models represent a fundamental shift in how we approach problem-solving and knowledge synthesis. My work focuses on bridging the gap between theoretical AI capabilities and practical software engineering solutions, always with an eye toward systems that are as intellectually satisfying as they are functionally robust.</p>
-          <p>In the trenches</p>
+          <h2 class="text-xl font-semibold text-black dark:text-white mt-8 mb-2">In the trenches</h2>
           <p>My autodidactic journey has taken me through the depths of functional programming paradigms, the elegance of immutable infrastructure, and the fascinating complexity of emergent AI behaviors. I approach each project as both an engineering challenge and an opportunity to push the boundaries of what's possible when human insight meets machine capability.</p>
           <p>Despite being labeled an LLM advocate, I remain skeptical of the hype—drawing from the doctrine of three bodies in Indian philosophy, I believe true intelligence requires the integration of physical, subtle, and causal embodiments that current AI fundamentally lacks.</p>
           <p>While I'm passionate about Linux and NixOS, I believe everyone should use whatever tools work best for them—my enthusiasm stems from personal preference, not evangelism.</p>
@@ -65,7 +65,7 @@ const stack = [
             <div class="flex justify-between">
               <h3 class="font-semibold text-black dark:text-white">
                 Recent posts
-              </p>
+              </h3>
               <a href="/blog" class="w-fit col-span-4 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
                 <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
                   All posts
@@ -88,7 +88,7 @@ const stack = [
             <div class="flex justify-between">
               <h3 class="font-semibold text-black dark:text-white">
                 Recent projects
-              </p>
+              </h3>
               <a href="/projects" class="w-fit col-span-4 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
                 <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
                   All projects
@@ -109,9 +109,9 @@ const stack = [
       <!-- Links Section -->
       <section class="animate">
         <div class="space-y-4">
-          <p class="font-semibold text-black dark:text-white">
+          <h2 class="font-semibold text-black dark:text-white">
             Find me elsewhere
-          </p>
+          </h2>
           <a href={SOCIALS_LINKS_HREF} target="_blank" class="group underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
             <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
               links.thomasleonhighbaugh.me
@@ -123,9 +123,9 @@ const stack = [
       <!-- Tech Stack Section -->
       <section class="animate">
         <div class="space-y-4">
-          <p class="font-semibold text-black dark:text-white">
-            Website build with
-          </p>
+          <h2 class="font-semibold text-black dark:text-white">
+            This site is built with
+          </h2>
           <div class="flex flex-wrap items-center gap-2 mt-5">
             {stack.map(item => (
               <StackCard 

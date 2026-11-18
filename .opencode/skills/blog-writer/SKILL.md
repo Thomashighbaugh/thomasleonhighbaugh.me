@@ -1,3 +1,8 @@
+---
+name: blog-writer
+description: Write a complete blog post for thomasleonhighbaugh.me from outline to polished draft. Use when asked to "write a blog post about X" or "draft a post on Y" — runs the full pipeline of outline, research, draft, edit and headline optimization, following rules/blog-writing-style.md and rules/blog-frontmatter.md.
+---
+
 # Blog Writer Skill
 
 Write a complete blog post for thomasleonhighbaugh.me from outline to polished draft.

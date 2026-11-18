@@ -1,3 +1,8 @@
+---
+name: hn-optimizer
+description: Optimize a blog post for Hacker News engagement on thomasleonhighbaugh.me — headline, quotable first paragraph, argument structure, and counterargument anticipation. Use when asked to "optimize this for HN" or "make this HN-ready", or when a draft is complete and needs HN-specific polish.
+---
+
 # HN Optimizer Skill
 
 Optimize a blog post for Hacker News engagement — headline, first paragraph, argument structure, and counterargument anticipation.

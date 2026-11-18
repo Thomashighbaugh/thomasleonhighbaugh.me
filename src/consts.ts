@@ -3,7 +3,7 @@ import type { Site, Page, Links } from "@types"
 // Global
 export const SITE: Site = {
   TITLE: "Thomas Leon Highbaugh",
-  DESCRIPTION: "Welcome to Thomas Leon Highbaugh, a portfolio and blog for designers and developers.",
+  DESCRIPTION: "Software engineer writing about LLMs, Linux, and the tooling that connects them.",
   AUTHOR: "Thomas Leon Highbaugh",
 }
 

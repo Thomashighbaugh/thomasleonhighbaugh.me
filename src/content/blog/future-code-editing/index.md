@@ -37,7 +37,7 @@ A big game changer that has eased my transition has been that I have been thorou
 
 ## The Power of NeoVim
 
-Among the various modal code editors, NeoVim stands out for several compelling reasons. Firstly, NeoVim's commitment to using Lua as an extensibility language is a game-changer. As someone already familiar with Lua through my experience with AwesomeWM, I found NeoVim's scripting environment to be intuitive and robust. This familiarity enabled me to customize and extend NeoVim to fit my exact needs seamlessly.
+Among the various modal code editors, NeoVim stands out for several compelling reasons. Firstly, NeoVim uses Lua as its extensibility language, and that is what won me over. As someone already familiar with Lua through my experience with AwesomeWM, I found NeoVim's scripting environment to be intuitive and robust. This familiarity enabled me to customize and extend NeoVim to fit my exact needs seamlessly.
 
 The Lua integration in NeoVim opens the door to a world of possibilities. I harnessed this power to create custom plugins, keybindings, and even automate repetitive tasks within my code editor. Whether it's building a specific workflow or crafting an entirely personalized environment, NeoVim's Lua integration empowers users to mold their coding experience to perfection.
 

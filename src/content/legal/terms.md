@@ -1,27 +1,32 @@
 ---
 title: "Terms of Use"
-date: "03/07/2024"
+date: "11/17/2026"
 ---
 
-Please read these Terms of Use ("Terms", "Terms of Use") carefully before using the [Your Website URL] website (the "Service") operated by [Your Company Name] ("us", "we", or "our").
+This is a personal website and blog by Thomas Leon Highbaugh. Reading it, copying from it, or running anything you find on it means you accept the terms below.
 
-#### Agreement to Terms
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet massa ut neque consequat congue. Sed id ipsum vitae sem imperdiet suscipit. Nulla facilisi. Morbi quis nibh at nunc pulvinar rhoncus. Proin porttitor dapibus dolor, id fermentum urna eleifend et. In feugiat pretium erat nec vestibulum.
+## License
 
-#### Intellectual Property Rights
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet massa ut neque consequat congue. Sed id ipsum vitae sem imperdiet suscipit. Nulla facilisi. Morbi quis nibh at nunc pulvinar rhoncus. Proin porttitor dapibus dolor, id fermentum urna eleifend et. In feugiat pretium erat nec vestibulum.
+The code, configuration, and writing on this site are released under the MIT License. That grants you permission to use, copy, modify, merge, publish, distribute, sublicense, and sell them, as long as the copyright and permission notice travel with any substantial portion you reuse. The full text is in the [LICENSE](https://github.com/Thomashighbaugh/thomasleonhighbaugh.me/blob/master/LICENSE) file.
 
-#### User Representations
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet massa ut neque consequat congue. Sed id ipsum vitae sem imperdiet suscipit. Nulla facilisi. Morbi quis nibh at nunc pulvinar rhoncus. Proin porttitor dapibus dolor, id fermentum urna eleifend et. In feugiat pretium erat nec vestibulum.
+The site started from an Astro template written by Mark Horn. His copyright notice stays in that file because the license requires it. Everything else is mine unless a post credits someone else.
 
-#### Links to Other Websites
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet massa ut neque consequat congue. Sed id ipsum vitae sem imperdiet suscipit. Nulla facilisi. Morbi quis nibh at nunc pulvinar rhoncus. Proin porttitor dapibus dolor, id fermentum urna eleifend et. In feugiat pretium erat nec vestibulum.
+## No warranty
 
-#### Termination
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet massa ut neque consequat congue. Sed id ipsum vitae sem imperdiet suscipit. Nulla facilisi. Morbi quis nibh at nunc pulvinar rhoncus. Proin porttitor dapibus dolor, id fermentum urna eleifend et. In feugiat pretium erat nec vestibulum.
+Everything here is provided "as is", without warranty of any kind, express or implied, including any warranty of merchantability, fitness for a particular purpose, and non-infringement.
 
-#### Governing Law
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet massa ut neque consequat congue. Sed id ipsum vitae sem imperdiet suscipit. Nulla facilisi. Morbi quis nibh at nunc pulvinar rhoncus. Proin porttitor dapibus dolor, id fermentum urna eleifend et. In feugiat pretium erat nec vestibulum.
+I write about software I have actually run on my own machines. That is not a promise it will run on yours. Commands in these posts can delete files, break a boot, or leave a system in a state you did not intend. Read them before running them, keep backups you have tested, and try new things somewhere that breaking them costs you nothing.
 
-#### Changes to These Terms of Use
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet massa ut neque consequat congue. Sed id ipsum vitae sem imperdiet suscipit. Nulla facilisi. Morbi quis nibh at nunc pulvinar rhoncus. Proin porttitor dapibus dolor, id fermentum urna eleifend et. In feugiat pretium erat nec vestibulum.
+None of this is professional advice. I am not your lawyer, your doctor, or the administrator of your systems, and reading a post does not make me responsible for what happens next.
+
+## No liability
+
+In no event shall I be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from or in connection with this site or anything you take from it.
+
+## Links to other sites
+
+Posts link to repositories, documentation, and other writers. I do not control those sites and linking to one is not an endorsement. Their content, their availability, and their terms are their own.
+
+## Changes
+
+These terms change when the site does. The date at the top of the page is the last revision, and continuing to use the site after a revision means you accept it.
